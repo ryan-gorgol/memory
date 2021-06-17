@@ -10,25 +10,14 @@ import doughnut from "../img/doughnut-1.svg";
 
 function CardContainer(props) {
   const [food, setFood] = useState([
-    apple,
-    avocado,
-    banana,
-    broccoli,
-    carrot,
-    cheese,
-    cherries,
-    doughnut,
-  ]);
-
-  const [selected, setSelected] = useState([
-    false,
-    false,
-    false,
-    false,
-    false,
-    false,
-    false,
-    false,
+    { img: apple, name: "apple", selected: false },
+    { img: avocado, name: "avocado", selected: false },
+    { img: banana, name: "banana", selected: false },
+    { img: broccoli, name: "broccoli", selected: false },
+    { img: carrot, name: "carrot", selected: false },
+    { img: cheese, name: "cheese", selected: false },
+    { img: cherries, name: "cherries", selected: false },
+    { img: doughnut, name: "doughnuts", selected: false },
   ]);
 
   //shuffle food array function
@@ -51,35 +40,37 @@ function CardContainer(props) {
     return food;
   }
 
-  shuffle(food);
-
   //setState of food array without re-rendering
   useEffect(() => {
-    setFood(food);
-  });
+    //  const shuffled = shuffle(food);
+    console.log(food);
+  }, [food]);
 
   //upon selecting card, setSelected to 'true'
-  const selectCard = () => {
-    console.log("selected card");
-    //console.log(selected);
-    setSelected(true);
-    console.log(selected);
+  const selectCard = (foodIndex) => {
+    const newFood = food.map((foodItem, index) => {
+      if (foodIndex === index) {
+        return { img: foodItem.img, name: foodItem.name, selected: true };
+      } else {
+        return foodItem;
+      }
+    });
+
+    const shuffledFood = shuffle(newFood);
+    setFood(shuffledFood);
+
+    //check the 'selected' state of the card.
+    //if 'selected' is true: game over, confirm high score.
+    // if 'selected' is false: shuffle array, re-render and score++
   };
 
   return (
     <div className="CardContainer">
-      <button onClick={selectCard}>
-        <img src={food[0]} alt={food[0]}></img>
-      </button>
-      <button>
-        <img src={food[1]} alt={food[1]}></img>
-      </button>
-      <button>
-        <img src={food[2]} alt={food[2]}></img>
-      </button>
-      <button>
-        <img src={food[3]} alt={food[4]}></img>
-      </button>
+      {food.slice(0, 4).map(({ img, name }, index) => (
+        <button onClick={() => selectCard(index)}>
+          <img src={img} alt={name}></img>
+        </button>
+      ))}
     </div>
   );
 }
