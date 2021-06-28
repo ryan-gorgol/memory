@@ -8,7 +8,7 @@ import cheese from '../img/cheese-1.svg';
 import cherries from '../img/cherries.svg';
 import doughnut from '../img/doughnut-1.svg';
 
-function CardContainer(props, { setScore }) {
+function CardContainer(props, { score, setScore }) {
   const [food, setFood] = useState([
     { img: apple, name: 'apple', selected: false },
     { img: avocado, name: 'avocado', selected: false },
@@ -69,11 +69,7 @@ function CardContainer(props, { setScore }) {
   return (
     <div className="CardContainer">
       {food.slice(0, 4).map(({ img, name, selected }, index) => (
-        <button
-          onClick={() =>
-            selectCard(selected, index, props.score, props.setScore)
-          }
-        >
+        <button key={name} onClick={() => selectCard(selected, index)}>
           <img src={img} alt={name} key={name}></img>
         </button>
       ))}
