@@ -8,7 +8,7 @@ import cheese from '../img/cheese-1.svg';
 import cherries from '../img/cherries.svg';
 import doughnut from '../img/doughnut-1.svg';
 
-function CardContainer(props) {
+function CardContainer(props, { setScore }) {
   const [food, setFood] = useState([
     { img: apple, name: 'apple', selected: false },
     { img: avocado, name: 'avocado', selected: false },
@@ -43,6 +43,7 @@ function CardContainer(props) {
   //upon selecting card, setSelected to 'true'
   const selectCard = (selected, foodIndex) => {
     console.log(selected);
+
     if (selected === true) {
       alert('This card has already been chosen! Memory Failure');
     } else {
@@ -63,17 +64,16 @@ function CardContainer(props) {
 
     const shuffledFood = shuffle(newFood);
     setFood(shuffledFood);
-
-    //check the 'selected' state of the card.
-
-    //if 'selected' is true: game over, confirm high score.
-    // if 'selected' is false: shuffle array, re-render and score++
   };
 
   return (
     <div className="CardContainer">
       {food.slice(0, 4).map(({ img, name, selected }, index) => (
-        <button onClick={() => selectCard(selected, index)}>
+        <button
+          onClick={() =>
+            selectCard(selected, index, props.score, props.setScore)
+          }
+        >
           <img src={img} alt={name} key={name}></img>
         </button>
       ))}
