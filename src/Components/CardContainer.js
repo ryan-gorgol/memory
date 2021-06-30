@@ -24,14 +24,6 @@ selectCard function for onClick behaviour.
 */
 
   const selectCard = (selected, foodIndex, score, setScore) => {
-    let resetDeck = food.map((foodItem) => {
-      return {
-        img: foodItem.img,
-        name: foodItem.name,
-        selected: false,
-      };
-    });
-
     const newFood = food.map((foodItem, index) => {
       if (foodIndex === index) {
         return {
@@ -44,24 +36,32 @@ selectCard function for onClick behaviour.
       }
     });
 
-    let comparedScores =
-      currentScore >= highScore
-        ? (highScore = currentScore)
-        : // eslint-disable-next-line no-self-assign
-          highScore;
+    const resetDeck = food.map((foodItem) => {
+      return {
+        img: foodItem.img,
+        name: foodItem.name,
+        selected: false,
+      };
+    });
 
+    const comparedScores =
+      score.currentScore >= score.highScore
+        ? (score.highScore = score.currentScore)
+        : // eslint-disable-next-line no-self-assign
+          (score.highScore = score.highScore);
     if (selected === true) {
       alert('Memory Failure! Try again.');
       setScore({
-        currentScore: 0,
         highScore: comparedScores,
+        currentScore: 0,
       });
       setFood(resetDeck);
+      shuffle(resetDeck);
     } else {
       score.currentScore++;
       setScore({
         currentScore: score.currentScore,
-        highScore: score.currentScore,
+        highScore: comparedScores,
       });
       const shuffledFood = shuffle(newFood);
       setFood(shuffledFood);
