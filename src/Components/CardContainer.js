@@ -6,21 +6,6 @@ function CardContainer(props, { highScore, currentScore }) {
   const [food, setFood] = useContext(DeckContext);
   const [score, setScore] = useContext(GameContext);
 
-  // variables which store key game functionality
-  function comparedScores(highScore, currentScore) {
-    currentScore >= highScore
-      ? (highScore = currentScore)
-      : (highScore = highScore);
-  }
-
-  const resetFood = food.map((foodItem) => {
-    return {
-      img: foodItem.img,
-      name: foodItem.name,
-      selected: false,
-    };
-  });
-
   function shuffle(food) {
     var m = food.length,
       t,
@@ -34,26 +19,19 @@ function CardContainer(props, { highScore, currentScore }) {
     }
     return food;
   }
-
   /* 
-   selectCard function for onClick behaviour.
-   */
+selectCard function for onClick behaviour.
+*/
 
-  const selectCard = (selected, foodIndex, score, setScore, comparedScores) => {
-    if (selected === true) {
-      alert('Memory Failure! Try again.');
-      setScore({
-        currentScore: 0,
-        highScore: comparedScores,
-      });
-      setFood(resetFood);
-    } else {
-      score.currentScore++;
-      setScore({
-        currentScore: score.currentScore,
-        highScore: score.currentScore,
-      });
-    }
+  const selectCard = (selected, foodIndex, score, setScore) => {
+    let resetDeck = food.map((foodItem) => {
+      return {
+        img: foodItem.img,
+        name: foodItem.name,
+        selected: false,
+      };
+    });
+
     const newFood = food.map((foodItem, index) => {
       if (foodIndex === index) {
         return {
@@ -66,9 +44,28 @@ function CardContainer(props, { highScore, currentScore }) {
       }
     });
 
-    const shuffledFood = shuffle(newFood);
-    setFood(shuffledFood);
-    console.log(food);
+    let comparedScores =
+      currentScore >= highScore
+        ? (highScore = currentScore)
+        : // eslint-disable-next-line no-self-assign
+          highScore;
+
+    if (selected === true) {
+      alert('Memory Failure! Try again.');
+      setScore({
+        currentScore: 0,
+        highScore: comparedScores,
+      });
+      setFood(resetDeck);
+    } else {
+      score.currentScore++;
+      setScore({
+        currentScore: score.currentScore,
+        highScore: score.currentScore,
+      });
+      const shuffledFood = shuffle(newFood);
+      setFood(shuffledFood);
+    }
   };
 
   return (
