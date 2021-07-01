@@ -70,7 +70,7 @@ selectCard function for onClick behaviour.
 
   return (
     <div className="CardContainer">
-      {food.slice(0, 4).map(({ img, name, selected }, index) => (
+      {food.slice(0, 8).map(({ img, name, selected }, index) => (
         <button
           key={name}
           onClick={() => selectCard(selected, index, score, setScore)}
